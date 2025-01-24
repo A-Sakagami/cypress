@@ -28,6 +28,22 @@ describe('ログイン', () => {
     cy.get('[id=postInput]').should('be.visible');
     cy.get('[id=send-post]').should('be.visible');
   })
+
+  it('管理者ユーザーでログイン', () => {
+    cy.visit('/login/');
+    cy.title().should('include', 'Login');
+    cy.get('[id=username]').type('admin');
+    cy.get('[id=password]').type('adminpass1234');
+    cy.get('#loginForm > button').click();
+    // ポップアップ処理
+    cy.on('window.alert', (text) => {
+      expect(text).to.contains('ログインしました');
+      return true;
+    });
+    cy.title().should('include', 'Admin');
+    cy.get('[id=postInput]').should('not.be.exist');
+    cy.get('[id=send-post]').should('not.be.exist');
+  })
 })
 
 describe('ログアウト', () => {
