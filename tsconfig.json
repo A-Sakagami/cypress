@@ -1,0 +1,15 @@
+{
+    "compilerOptions": {
+      "target": "ES6",
+      "lib": ["es6", "dom"],
+      "types": ["cypress"], // Cypress型定義を利用
+      "strict": true,
+      "esModuleInterop": true,
+      "skipLibCheck": true,
+      "moduleResolution": "node",
+      // トランスパイル先
+      //"outDir": "./dist", // トランスパイルしたファイルをdistディレクトリに出力
+    },
+    "include": ["cypress/**/*.ts"] // Cypressディレクトリ内のTypeScriptファイルを対象
+}
+  

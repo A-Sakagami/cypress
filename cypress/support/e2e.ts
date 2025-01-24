@@ -13,5 +13,12 @@
 // https://on.cypress.io/configuration
 // ***********************************************************
 
-// Import commands.js using ES2015 syntax:
-import './commands'
+// カスタムコマンドの読み込み
+import './commands';
+
+// 必要に応じて初期化コードを追加
+Cypress.on('uncaught:exception', (err) => {
+  // エラーを無視する場合
+  console.error('エラーが発生しました:', err);
+  return false;
+});
