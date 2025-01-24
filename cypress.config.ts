@@ -28,15 +28,14 @@ export default defineConfig({
 
     // テストスクリプトのパス
     specPattern: 'cypress/e2e/**/*.cy.{js,jsx,ts,tsx}', 
-    // トランスパイルされたファイルを指定
+    // トランスパイルされたファイルを指定する場合
     //specPattern: 'cypress/dist/e2e/*.js',
 
     setupNodeEvents(on, config) {
-      // implement node event listeners here
+      // Node.js のイベントを設定するコードをここに記述します
       on("task", {
         log(message) {
           console.log(message);
-
           return null;
         },
       });
