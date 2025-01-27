@@ -82,7 +82,12 @@ describe('ユーザー登録', () => {
         // ログイン情報確認
         cy.get('[id=email]').should('have.text', 'sakagami@genz.jp');
         cy.get('[id=rank]').should('have.text', 'プレミアム会員');
-        
+        // アイコン設定
+        cy.get('[id=icon-link]').click();
+        // ファイルを選択画面から、ローカルのファイルをアップロードする
+        const filepath = "nigaoe_nitobe_inazou.png";
+        cy.get('#icon').attachFile(filepath);
+        cy.screenshot('アイコン設定', { capture: 'fullPage' });
     });
 
     it('アカウント削除', () => {
