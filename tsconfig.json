@@ -1,8 +1,9 @@
 {
     "compilerOptions": {
+      "baseUrl": ".",
       "target": "ES6",
       "lib": ["es6", "dom"],
-      "types": ["cypress"], // Cypress型定義を利用
+      "types": ["cypress", "node"], // Cypress型定義を利用
       "strict": true,
       "esModuleInterop": true,
       "skipLibCheck": true,
