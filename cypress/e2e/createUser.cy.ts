@@ -83,14 +83,90 @@ describe('ユーザー登録', () => {
         cy.get('[id=email]').should('have.text', 'sakagami@genz.jp');
         cy.get('[id=rank]').should('have.text', 'プレミアム会員');
         // アイコン設定
-        cy.get('[id=icon-link]').click();
+        cy.get('[id=icon-link]').should("have.text", "アイコン設定").click();
         // ファイルを選択画面から、ローカルのファイルをアップロードする
-        const filepath = "nigaoe_nitobe_inazou.png";
+        const filepath:string = "nigaoe_nitobe_inazou.png";
         cy.get('#icon').attachFile(filepath);
+        // レンジバーの操作
+        cy.get("[id=zoom]").invoke("val", 75);
+        cy.get("[id=zoom]").trigger("change");
+        cy.get("[id=zoom]").should("have.value", 75);
+        // 枠線RGBの操作
+        cy.get("[id=color]").invoke("val", "#b80000");
+        cy.get("[id=color]").trigger("change");
+        cy.get("[id=color]").should("have.value", "#b80000");
         cy.screenshot('アイコン設定', { capture: 'fullPage' });
+        cy.get("#icon-form > button").should("have.text", "確定").click();
+        cy.url().should('include', '/mypage.html');
+        // アイコン画像の確認
+        cy.get("[id=icon-holder]").should("be.visible");
+        cy.get("[id=icon-holder]").find("img").should("have.attr", "src");
+
     });
 
-    it('アカウント削除', () => {
+    it('アカウント削除_キャンセル', () => {
+        // クッキー設定
+        cy.setCookie("session", Cypress.env("session"));
+        cy.getCookie("session").then((cookie) => {
+            cy.log(`Cookie value: ${cookie?.value}`);
+          });
+        // ローカルストレージ設定
+        cy.window().then((win) => {
+            win.localStorage.setItem(Cypress.env("PREMIUM_USER"), Cypress.env("authToken"));
+            cy.log(`Local storage value: ${win.localStorage.getItem(Cypress.env("PREMIUM_USER"))}`);
+        });
 
+        cy.visit('/mypage.html');
+        // ログイン情報確認
+        cy.get('[id=email]').should('have.text', 'sakagami@genz.jp');
+        cy.get('[id=rank]').should('have.text', 'プレミアム会員');
+       
+        // ポップアップ制御
+        // キャンセル処理
+        cy.on("window:confirm", (text) => {
+            expect(text).to.equal("退会すると全ての情報が削除されます。\nよろしいですか？");
+            return false;
+        });
+        // アカウント削除
+        cy.get('#delete-form > button').should("have.text", "退会する").click();
+
+        // ヘッダーの確認
+        cy.url().should('include', '/mypage.html');
+
+    });
+
+    it('アカウント削除_OK', () => {
+        // クッキー設定
+        cy.setCookie("session", Cypress.env("session"));
+        cy.getCookie("session").then((cookie) => {
+            cy.log(`Cookie value: ${cookie?.value}`);
+          });
+        // ローカルストレージ設定
+        cy.window().then((win) => {
+            win.localStorage.setItem(Cypress.env("PREMIUM_USER"), Cypress.env("authToken"));
+            cy.log(`Local storage value: ${win.localStorage.getItem(Cypress.env("PREMIUM_USER"))}`);
+        });
+
+        cy.visit('/mypage.html');
+        // ログイン情報確認
+        cy.get('[id=email]').should('have.text', 'sakagami@genz.jp');
+        cy.get('[id=rank]').should('have.text', 'プレミアム会員');
+       
+        // ポップアップ制御
+        // OK処理
+        cy.on("window:confirm", (text) => {
+            expect(text).to.equal("退会すると全ての情報が削除されます。\nよろしいですか？");
+            return true; 
+        });
+        cy.on("window:alert", (text) => {
+            expect(text).to.equal("退会処理を完了しました。ご利用ありがとうございました。");
+            return true; 
+        });
+        // アカウント削除
+        cy.get('#delete-form > button').should("have.text", "退会する").click();
+
+        // ヘッダーの確認
+        cy.url().should('include', '/index.html');
+        cy.wait(1000);
     });
 });
