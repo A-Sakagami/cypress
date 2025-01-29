@@ -80,7 +80,7 @@ describe('ユーザー登録', () => {
           
         cy.visit('/mypage.html');
         // ログイン情報確認
-        cy.get('[id=email]').should('have.text', 'sakagami@genz.jp');
+        cy.get('[id=email]').should('have.text', Cypress.env("PREMIUM_USER"));
         cy.get('[id=rank]').should('have.text', 'プレミアム会員');
         // アイコン設定
         cy.get('[id=icon-link]').should("have.text", "アイコン設定").click();
@@ -118,7 +118,7 @@ describe('ユーザー登録', () => {
 
         cy.visit('/mypage.html');
         // ログイン情報確認
-        cy.get('[id=email]').should('have.text', 'sakagami@genz.jp');
+        cy.get('[id=email]').should('have.text', Cypress.env("PREMIUM_USER"));
         cy.get('[id=rank]').should('have.text', 'プレミアム会員');
        
         // ポップアップ制御
@@ -149,7 +149,7 @@ describe('ユーザー登録', () => {
 
         cy.visit('/mypage.html');
         // ログイン情報確認
-        cy.get('[id=email]').should('have.text', 'sakagami@genz.jp');
+        cy.get('[id=email]').should('have.text', Cypress.env("PREMIUM_USER"));
         cy.get('[id=rank]').should('have.text', 'プレミアム会員');
        
         // ポップアップ制御
